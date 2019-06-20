@@ -23,8 +23,8 @@ class BucketManager:
         self.session = session
         self.s3 = self.session.resource('s3')
         self.transfer_config = boto3.s3.transfer.TransferConfig(
-            multipart_chunksize = self.CHUNK_SIZE,
-            multipart_threshold = self.CHUNK_SIZE
+            multipart_chunksize=self.CHUNK_SIZE,
+            multipart_threshold=self.CHUNK_SIZE
         )
         self.manifest = {}
 
@@ -113,7 +113,6 @@ class BucketManager:
 
         return hash
 
-
     def gen_etag(self, path):
         """Generate etag for file."""
         hashes = []
@@ -132,9 +131,10 @@ class BucketManager:
         elif len(hashes) == 1:
             return '"{}"'.format(hashes[0].hexdigest())
         else:
-            hash = self.hash_data(reduce(lambda x, y: x + y, (h.digest() for h in hashes)))
+            hash = self.hash_data(
+                reduce(lambda x, y: x + y, (h.digest() for h in hashes))
+            )
             return '"{}-{}"'.format(hash.hexdigest(), len(hashes))
-
 
     def upload_file(self, bucket, path, key):
         """Upload path to s3_bucket at key."""
@@ -150,9 +150,8 @@ class BucketManager:
             ExtraArgs={
                 'ContentType': content_type
             },
-            Config = self.transfer_config
+            Config=self.transfer_config
         )
-
 
     def sync(self, pathname, bucket_name):
         """Sync contents of path to bucket."""
