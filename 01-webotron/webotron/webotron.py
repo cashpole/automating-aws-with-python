@@ -15,12 +15,12 @@ Webotron automates the process of deploying static websites to AWS.
 import boto3
 import click
 
-from bucket import BucketManager
-from domain import DomainManager
-from certificate import CertificateManager
-from cdn import DistributionManager
+from webotron.bucket import BucketManager
+from webotron.domain import DomainManager
+from webotron.certificate import CertificateManager
+from webotron.cdn import DistributionManager
 
-import util
+from webotron import util
 
 session = None
 bucket_manager = None
@@ -98,7 +98,7 @@ def setup_domain(domain):
 @cli.command('find-cert')
 @click.argument('domain')
 def find_cert(domain):
-    """Find certificate."""
+    """Find a certificate for <DOMAIN>."""
     print(cert_manager.find_matching_cert(domain))
 
 
@@ -106,7 +106,7 @@ def find_cert(domain):
 @click.argument('domain')
 @click.argument('bucket')
 def setup_cdn(domain, bucket):
-    """Configure a CDN."""
+    """Set up CloudFront CDN for DOMAIN pointing to..."""
     dist = dist_manager.find_matching_dist(domain)
 
     if not dist:
